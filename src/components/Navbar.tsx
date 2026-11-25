@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useStore } from '../context/StoreContext';
+import { resolveAssetUrl } from '../lib/formatters';
 import { navigate } from '../lib/router';
 
 interface NavbarProps {
@@ -51,7 +52,7 @@ export function Navbar({ currentPath, currentSearch = '' }: NavbarProps) {
             className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-zinc-950 whitespace-nowrap shrink-0 flex items-center gap-2 cursor-pointer"
           >
             {settings.logoUrl ? (
-              <img src={settings.logoUrl} alt={settings.storeName} className="h-7 w-auto object-contain" />
+              <img src={resolveAssetUrl(settings.logoUrl)} alt={settings.storeName} className="h-7 w-auto object-contain" />
             ) : null}
             <span>{settings.storeName || 'PASSO URBANO'}</span>
           </button>

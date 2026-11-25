@@ -3,6 +3,7 @@ import { ArrowRight, Search, Star } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
 import { useStore } from '../context/StoreContext';
 import { HERO_BANNER_IMAGE } from '../lib/seedData';
+import { resolveAssetUrl } from '../lib/formatters';
 import { navigate } from '../lib/router';
 
 type ShowcaseTab = 'featured' | 'bestSeller' | 'isNew' | 'onSale';
@@ -107,7 +108,7 @@ export function HomePage() {
 
           <div className="lg:col-span-7 relative min-h-[280px] lg:min-h-[440px]">
             <img
-              src={settings.bannerImageUrl || HERO_BANNER_IMAGE}
+              src={resolveAssetUrl(settings.bannerImageUrl || HERO_BANNER_IMAGE)}
               alt="Tênis esportivo urbano Passo Urbano"
               referrerPolicy="no-referrer"
               className="w-full h-full object-cover"

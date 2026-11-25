@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AlertTriangle, ArrowRight, Minus, Plus, Trash2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useStore } from '../context/StoreContext';
-import { formatBRL } from '../lib/formatters';
+import { formatBRL, resolveAssetUrl } from '../lib/formatters';
 import { navigate } from '../lib/router';
 
 export function CartPage() {
@@ -94,7 +94,7 @@ export function CartPage() {
                 >
                   <div className="flex items-center gap-4">
                     <img
-                      src={item.image}
+                      src={resolveAssetUrl(item.image)}
                       alt={item.productName}
                       referrerPolicy="no-referrer"
                       className="w-24 h-20 object-cover rounded-lg bg-zinc-100 shrink-0"

@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useStore } from '../context/StoreContext';
 import { db } from '../lib/firebase';
-import { formatBRL } from '../lib/formatters';
+import { formatBRL, resolveAssetUrl } from '../lib/formatters';
 import { navigate } from '../lib/router';
 import { getActiveBearerToken } from '../lib/sessionToken';
 
@@ -175,7 +175,7 @@ export function ProductPage({ productId }: { productId: string }) {
           <div className="aspect-[4/3] w-full rounded-2xl overflow-hidden bg-zinc-100 border border-zinc-200">
             {showVideo && product.videoUrl ? (
               <video
-                src={product.videoUrl}
+                src={resolveAssetUrl(product.videoUrl)}
                 controls
                 autoPlay
                 loop
@@ -184,7 +184,7 @@ export function ProductPage({ productId }: { productId: string }) {
               />
             ) : (
               <img
-                src={product.images[activeMediaIndex] || product.images[0]}
+                src={resolveAssetUrl(product.images[activeMediaIndex] || product.images[0] || '')}
                 alt={product.name}
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover"
@@ -204,7 +204,7 @@ export function ProductPage({ productId }: { productId: string }) {
                   !showVideo && activeMediaIndex === idx ? 'border-zinc-950' : 'border-zinc-200'
                 }`}
               >
-                <img src={img} alt={`${product.name} ${idx + 1}`} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
+                <img src={resolveAssetUrl(img)} alt={`${product.name} ${idx + 1}`} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
               </button>
             ))}
             {product.videoUrl && (

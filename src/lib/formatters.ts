@@ -44,9 +44,32 @@ export function sanitizeId(text: string): string {
   return text.replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 120);
 }
 
+export function getAppBasePath(overrideBase?: string): string {
+  const raw =
+    overrideBase ??
+    (typeof import.meta !== 'undefined' && import.meta.env?.BASE_URL
+      ? import.meta.env.BASE_URL
+      : '/');
+  if (!raw || raw === '/') return '/';
+  const withLeading = raw.startsWith('/') ? raw : `/${raw}`;
+  return withLeading.endsWith('/') ? withLeading : `${withLeading}/`;
+}
+
+export function resolveAssetUrl(url: string, overrideBase?: string): string {
+  if (!url) return '';
+  if (/^(https?:|data:|blob:)/i.test(url)) return url;
+  const base = getAppBasePath(overrideBase);
+  if (base === '/') return url;
+  if (url.startsWith(base)) return url;
+  if (url.startsWith('/')) {
+    return `${base}${url.slice(1)}`;
+  }
+  return `${base}${url}`;
+}
+
 export function isValidSafeUrl(url: string): boolean {
   if (!url) return false;
-  if (url.startsWith('/src/assets/')) return true;
+  if (url.startsWith('/src/assets/') || url.startsWith('/E-comerc/src/assets/')) return true;
   try {
     const parsed = new URL(url);
     return parsed.protocol === 'https:' || parsed.protocol === 'http:';

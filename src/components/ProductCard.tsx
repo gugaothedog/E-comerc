@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Package } from 'lucide-react';
-import { formatBRL } from '../lib/formatters';
+import { formatBRL, resolveAssetUrl } from '../lib/formatters';
 import { navigate } from '../lib/router';
 import { useStore } from '../context/StoreContext';
 import type { Product } from '../types/store';
@@ -27,7 +27,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <div className="relative aspect-[4/3] w-full bg-zinc-100 overflow-hidden">
         {!imgError && product.images[0] ? (
           <img
-            src={product.images[0]}
+            src={resolveAssetUrl(product.images[0])}
             alt={product.name}
             referrerPolicy="no-referrer"
             onError={() => setImgError(true)}

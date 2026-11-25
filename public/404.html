@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PASSO URBANO — Redirecionando...</title>
+    <script>
+      (function () {
+        var base = '/E-comerc/';
+        var path = window.location.pathname || base;
+        var search = window.location.search || '';
+        var hash = window.location.hash || '';
+        var routePath =
+          path.indexOf(base) === 0
+            ? '/' + path.slice(base.length)
+            : path.indexOf('/E-comerc') === 0
+            ? path.slice('/E-comerc'.length) || '/'
+            : '/';
+        var target = routePath + search + hash;
+        window.location.replace(base + '?p=' + encodeURIComponent(target));
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

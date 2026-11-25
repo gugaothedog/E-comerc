@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Copy, Edit3, Plus, Search, Trash2, Upload, X } from 'lucide-react';
-import { formatBRL, sanitizeId } from '../../lib/formatters';
+import { formatBRL, resolveAssetUrl, sanitizeId } from '../../lib/formatters';
 import {
   deleteProductById,
   saveProductAndVariants,
@@ -303,7 +303,7 @@ export function SellerProductsTab({
                 <tr key={prod.id} className="hover:bg-zinc-50">
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
-                      <img src={prod.images[0]} alt={prod.name} className="w-10 h-8 object-cover rounded bg-zinc-100" />
+                      <img src={resolveAssetUrl(prod.images[0] || '')} alt={prod.name} className="w-10 h-8 object-cover rounded bg-zinc-100" />
                       <span className="font-semibold text-zinc-950">{prod.name}</span>
                     </div>
                   </td>
@@ -463,7 +463,7 @@ export function SellerProductsTab({
                 <div className="flex flex-wrap gap-2">
                   {images.map((img, i) => (
                     <div key={i} className="relative w-16 h-14 rounded border border-zinc-200 overflow-hidden">
-                      <img src={img} alt="Preview" className="w-full h-full object-cover" />
+                      <img src={resolveAssetUrl(img)} alt="Preview" className="w-full h-full object-cover" />
                       <button
                         type="button"
                         onClick={() => setImages(images.filter((_, idx) => idx !== i))}

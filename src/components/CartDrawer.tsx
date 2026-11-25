@@ -1,7 +1,7 @@
 import { Trash2, X, Plus, Minus, ArrowRight, AlertTriangle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useStore } from '../context/StoreContext';
-import { formatBRL } from '../lib/formatters';
+import { formatBRL, resolveAssetUrl } from '../lib/formatters';
 import { navigate } from '../lib/router';
 
 export function CartDrawer() {
@@ -61,7 +61,7 @@ export function CartDrawer() {
               return (
                 <div key={item.variantId} className="flex gap-4 pb-4 border-b border-zinc-100">
                   <img
-                    src={item.image}
+                    src={resolveAssetUrl(item.image)}
                     alt={item.productName}
                     referrerPolicy="no-referrer"
                     className="w-20 h-20 object-cover rounded-lg bg-zinc-100 shrink-0"

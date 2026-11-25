@@ -784,9 +784,9 @@ async function startServer() {
           external_reference: `${orderId}|${reservationId}`,
           notification_url: `${appUrl}/api/payments/mercadopago/webhook`,
           back_urls: {
-            success: `${appUrl}/minha-conta?pagamento=sucesso&pedido=${orderId}`,
-            failure: `${appUrl}/checkout?pagamento=falha&pedido=${orderId}`,
-            pending: `${appUrl}/minha-conta?pagamento=pendente&pedido=${orderId}`,
+            success: `${appUrl}/E-comerc/minha-conta?pagamento=sucesso&pedido=${orderId}`,
+            failure: `${appUrl}/E-comerc/checkout?pagamento=falha&pedido=${orderId}`,
+            pending: `${appUrl}/E-comerc/minha-conta?pagamento=pendente&pedido=${orderId}`,
           },
           auto_return: 'approved',
           expires: true,
@@ -1065,6 +1065,11 @@ async function startServer() {
   // VITE / STATIC SERVING (PORT 3000)
   // =========================================================================
 
+  const APP_BASE = '/E-comerc';
+  app.get('/', (_req, res) => {
+    res.redirect(302, `${APP_BASE}/`);
+  });
+
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -1073,9 +1078,12 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distDir = path.resolve(process.cwd(), 'dist');
-    app.use(express.static(distDir));
-    app.get('*', (_req, res) => {
+    app.use(APP_BASE, express.static(distDir));
+    app.get([APP_BASE, `${APP_BASE}/*`], (_req, res) => {
       res.sendFile(path.join(distDir, 'index.html'));
+    });
+    app.get('*', (_req, res) => {
+      res.redirect(302, `${APP_BASE}/`);
     });
   }
 

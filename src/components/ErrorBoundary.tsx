@@ -1,4 +1,5 @@
 import React from 'react';
+import { navigate } from '../lib/router';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -44,8 +45,7 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
               <button
                 onClick={() => {
                   this.setState({ hasError: false, message: '' });
-                  window.history.pushState({}, '', '/');
-                  window.dispatchEvent(new PopStateEvent('popstate'));
+                  navigate('/');
                 }}
                 className="px-4 py-2 text-sm font-medium border border-zinc-300 text-zinc-800 rounded-lg hover:bg-zinc-50 transition-colors"
               >
