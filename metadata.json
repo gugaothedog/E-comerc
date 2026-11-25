@@ -1,0 +1,6 @@
+{
+  "name": "PASSO URBANO — Loja Virtual de Tênis",
+  "description": "Loja virtual profissional especializada em tênis esportivos, casuais, urbanos e acessórios, com controle atômico de estoque e painel exclusivo do vendedor.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

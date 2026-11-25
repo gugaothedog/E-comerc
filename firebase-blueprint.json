@@ -1,0 +1,374 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Perfil básico do usuário autenticado (cliente ou vendedor)",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "email": { "type": "string", "format": "email", "maxLength": 254 },
+        "role": { "type": "string", "enum": ["customer", "seller", "admin"] },
+        "totalOrders": { "type": "number" },
+        "totalSpent": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "role", "createdAt", "updatedAt"]
+    },
+    "UserPrivateInfo": {
+      "title": "UserPrivateInfo",
+      "description": "Dados pessoais sensíveis (PII) isolados do usuário",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "phone": { "type": "string", "maxLength": 30 },
+        "cpf": { "type": "string", "maxLength": 20 },
+        "addresses": { "type": "array" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "addresses", "updatedAt"]
+    },
+    "Seller": {
+      "title": "Seller",
+      "description": "Registro de autorização exclusiva do vendedor",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "format": "email", "maxLength": 254 },
+        "displayName": { "type": "string", "maxLength": 120 },
+        "role": { "type": "string", "enum": ["seller", "admin"] },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "displayName", "role", "active", "createdAt"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Categoria de calçados ou acessórios",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "slug": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "description": { "type": "string", "maxLength": 300 },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "slug", "active", "createdAt", "updatedAt"]
+    },
+    "Brand": {
+      "title": "Brand",
+      "description": "Marca comercial disponível na loja",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "slug": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "description": { "type": "string", "maxLength": 300 },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "slug", "active", "createdAt", "updatedAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Produto do catálogo com mídias, preços e atributos",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "brandId": { "type": "string", "maxLength": 128 },
+        "brandName": { "type": "string", "maxLength": 80 },
+        "model": { "type": "string", "maxLength": 120 },
+        "description": { "type": "string", "maxLength": 4000 },
+        "originalPrice": { "type": "number" },
+        "promoPrice": { "type": "number" },
+        "categoryId": { "type": "string", "maxLength": 128 },
+        "categoryName": { "type": "string", "maxLength": 80 },
+        "sku": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "images": { "type": "array" },
+        "videoUrl": { "type": "string", "maxLength": 1000 },
+        "colors": { "type": "array" },
+        "sizes": { "type": "array" },
+        "featured": { "type": "boolean" },
+        "bestSeller": { "type": "boolean" },
+        "isNew": { "type": "boolean" },
+        "onSale": { "type": "boolean" },
+        "active": { "type": "boolean" },
+        "soldCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "brandId", "brandName", "model", "description", "originalPrice", "categoryId", "categoryName", "sku", "images", "colors", "sizes", "active", "createdAt", "updatedAt"]
+    },
+    "InventoryVariant": {
+      "title": "InventoryVariant",
+      "description": "Estoque atômico individual por SKU, cor e numeração",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productId": { "type": "string", "maxLength": 128 },
+        "sku": { "type": "string", "maxLength": 64 },
+        "productName": { "type": "string", "maxLength": 160 },
+        "color": { "type": "string", "maxLength": 48 },
+        "size": { "type": "string", "maxLength": 16 },
+        "availableStock": { "type": "number" },
+        "reservedStock": { "type": "number" },
+        "soldStock": { "type": "number" },
+        "lowStockThreshold": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "productId", "sku", "productName", "color", "size", "availableStock", "reservedStock", "soldStock", "updatedAt"]
+    },
+    "StockMovement": {
+      "title": "StockMovement",
+      "description": "Registro auditável de movimentação de estoque",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "variantId": { "type": "string", "maxLength": 128 },
+        "productId": { "type": "string", "maxLength": 128 },
+        "sku": { "type": "string", "maxLength": 64 },
+        "color": { "type": "string", "maxLength": 48 },
+        "size": { "type": "string", "maxLength": 16 },
+        "type": { "type": "string", "enum": ["entry", "exit", "adjustment", "reserve", "release", "confirm"] },
+        "quantityDelta": { "type": "number" },
+        "previousAvailable": { "type": "number" },
+        "newAvailable": { "type": "number" },
+        "reason": { "type": "string", "maxLength": 240 },
+        "actorUid": { "type": "string", "maxLength": 128 },
+        "operationId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "variantId", "productId", "sku", "type", "quantityDelta", "reason", "actorUid", "operationId", "createdAt"]
+    },
+    "Reservation": {
+      "title": "Reservation",
+      "description": "Reserva temporária de 10 minutos para checkout concorrente",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "operationId": { "type": "string", "maxLength": 128 },
+        "idempotencyKey": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "enum": ["active", "confirmed", "expired", "released", "cancelled"] },
+        "items": { "type": "array" },
+        "totalAmount": { "type": "number" },
+        "expiresAtMs": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "operationId", "idempotencyKey", "userId", "status", "items", "totalAmount", "expiresAtMs", "createdAt", "updatedAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Pedido do cliente com histórico de estados e pagamento",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "orderNumber": { "type": "string", "maxLength": 40 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "customerName": { "type": "string", "maxLength": 120 },
+        "customerEmail": { "type": "string", "maxLength": 254 },
+        "reservationId": { "type": "string", "maxLength": 128 },
+        "operationId": { "type": "string", "maxLength": 128 },
+        "idempotencyKey": { "type": "string", "maxLength": 128 },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "discountCode": { "type": "string", "maxLength": 40 },
+        "discountAmount": { "type": "number" },
+        "shippingCost": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "paymentMethod": { "type": "string", "maxLength": 60 },
+        "paymentStatus": { "type": "string", "enum": ["pending", "approved", "rejected", "cancelled", "expired"] },
+        "paymentProviderId": { "type": "string", "maxLength": 128 },
+        "lastPaymentEventId": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "enum": ["aguardando_pagamento", "pagamento_aprovado", "em_preparacao", "enviado", "entregue", "cancelado"] },
+        "shippingAddress": { "type": "object" },
+        "trackingCode": { "type": "string", "maxLength": 80 },
+        "statusHistory": { "type": "array" },
+        "cancellationRequested": { "type": "boolean" },
+        "cancellationReason": { "type": "string", "maxLength": 300 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "orderNumber", "userId", "customerName", "customerEmail", "reservationId", "operationId", "idempotencyKey", "items", "subtotal", "shippingCost", "totalAmount", "paymentMethod", "paymentStatus", "status", "shippingAddress", "statusHistory", "createdAt", "updatedAt"]
+    },
+    "PaymentEvent": {
+      "title": "PaymentEvent",
+      "description": "Evento idempotente validado de pagamento via gateway",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "providerEventId": { "type": "string", "maxLength": 128 },
+        "orderId": { "type": "string", "maxLength": 128 },
+        "reservationId": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "maxLength": 40 },
+        "amount": { "type": "number" },
+        "verified": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "providerEventId", "orderId", "reservationId", "status", "amount", "verified", "createdAt"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Avaliação de cliente sobre produto ou loja",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "productId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userName": { "type": "string", "maxLength": 100 },
+        "rating": { "type": "number" },
+        "comment": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "productId", "userId", "userName", "rating", "comment", "createdAt"]
+    },
+    "Coupon": {
+      "title": "Coupon",
+      "description": "Cupom promocional de desconto",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "code": { "type": "string", "maxLength": 40 },
+        "discountPercent": { "type": "number" },
+        "minSubtotal": { "type": "number" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "code", "discountPercent", "minSubtotal", "active", "createdAt"]
+    },
+    "StorageFile": {
+      "title": "StorageFile",
+      "description": "Metadados e tamanho real de arquivo armazenado no Firebase Storage",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "path": { "type": "string", "maxLength": 300 },
+        "name": { "type": "string", "maxLength": 200 },
+        "mediaType": { "type": "string", "enum": ["image", "video", "banner", "logo"] },
+        "mimeType": { "type": "string", "maxLength": 120 },
+        "sizeBytes": { "type": "number" },
+        "url": { "type": "string", "maxLength": 1000 },
+        "productId": { "type": "string", "maxLength": 128 },
+        "uploadedBy": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "path", "name", "mediaType", "mimeType", "sizeBytes", "url", "uploadedBy", "createdAt"]
+    },
+    "StoreSettings": {
+      "title": "StoreSettings",
+      "description": "Configurações institucionais, políticas e cota operacional da loja",
+      "type": "object",
+      "properties": {
+        "storeName": { "type": "string", "maxLength": 120 },
+        "logoUrl": { "type": "string", "maxLength": 1000 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "phone": { "type": "string", "maxLength": 40 },
+        "whatsapp": { "type": "string", "maxLength": 40 },
+        "email": { "type": "string", "maxLength": 254 },
+        "address": { "type": "string", "maxLength": 300 },
+        "instagram": { "type": "string", "maxLength": 200 },
+        "tiktok": { "type": "string", "maxLength": 200 },
+        "youtube": { "type": "string", "maxLength": 200 },
+        "shippingInfo": { "type": "string", "maxLength": 2000 },
+        "exchangePolicy": { "type": "string", "maxLength": 4000 },
+        "privacyPolicy": { "type": "string", "maxLength": 4000 },
+        "cnpj": { "type": "string", "maxLength": 30 },
+        "legalName": { "type": "string", "maxLength": 160 },
+        "storageLimitBytes": { "type": "number" },
+        "bannerTitle": { "type": "string", "maxLength": 120 },
+        "bannerSubtitle": { "type": "string", "maxLength": 240 },
+        "bannerImageUrl": { "type": "string", "maxLength": 1000 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["storeName", "email", "storageLimitBytes", "updatedAt"]
+    },
+    "AdminLog": {
+      "title": "AdminLog",
+      "description": "Registro de auditoria de operações administrativas",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "actorUid": { "type": "string", "maxLength": 128 },
+        "actorEmail": { "type": "string", "maxLength": 254 },
+        "action": { "type": "string", "maxLength": 120 },
+        "targetType": { "type": "string", "maxLength": 80 },
+        "targetId": { "type": "string", "maxLength": 128 },
+        "details": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "actorUid", "actorEmail", "action", "targetType", "targetId", "details", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Perfis de clientes e vendedores"
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": { "$ref": "#/entities/UserPrivateInfo" },
+      "description": "Dados pessoais (PII) isolados do cliente"
+    },
+    "/sellers/{userId}": {
+      "schema": { "$ref": "#/entities/Seller" },
+      "description": "Lista de vendedores autorizados"
+    },
+    "/categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/Category" },
+      "description": "Categorias do catálogo"
+    },
+    "/brands/{brandId}": {
+      "schema": { "$ref": "#/entities/Brand" },
+      "description": "Marcas do catálogo"
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Produtos da loja"
+    },
+    "/inventory/{variantId}": {
+      "schema": { "$ref": "#/entities/InventoryVariant" },
+      "description": "Estoque individual por SKU, cor e numeração"
+    },
+    "/stockMovements/{movementId}": {
+      "schema": { "$ref": "#/entities/StockMovement" },
+      "description": "Histórico de movimentações de estoque"
+    },
+    "/reservations/{reservationId}": {
+      "schema": { "$ref": "#/entities/Reservation" },
+      "description": "Reservas temporárias de 10 minutos"
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Pedidos realizados"
+    },
+    "/paymentEvents/{eventId}": {
+      "schema": { "$ref": "#/entities/PaymentEvent" },
+      "description": "Eventos idempotentes de confirmação de pagamento"
+    },
+    "/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/Review" },
+      "description": "Avaliações de produtos"
+    },
+    "/coupons/{couponId}": {
+      "schema": { "$ref": "#/entities/Coupon" },
+      "description": "Cupons de desconto"
+    },
+    "/storageFiles/{fileId}": {
+      "schema": { "$ref": "#/entities/StorageFile" },
+      "description": "Inventário de arquivos no Firebase Storage"
+    },
+    "/storeSettings/{settingId}": {
+      "schema": { "$ref": "#/entities/StoreSettings" },
+      "description": "Configurações globais da loja"
+    },
+    "/adminLogs/{logId}": {
+      "schema": { "$ref": "#/entities/AdminLog" },
+      "description": "Logs de auditoria administrativa"
+    }
+  }
+}

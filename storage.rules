@@ -1,0 +1,20 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSeller() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    // Imagens, vídeos e banners da loja PASSO URBANO
+    match /store/{allPaths=**} {
+      allow read: if true;
+      allow write: if isSeller()
+        && request.resource.size <= 25 * 1024 * 1024
+        && (
+          request.resource.contentType.matches('image/.*') ||
+          request.resource.contentType.matches('video/.*')
+        );
+      allow delete: if isSeller();
+    }
+  }
+}
